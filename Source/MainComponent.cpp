@@ -9,13 +9,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "FileAudioSource.h"
 #include "ScalingAudioSource.h"
-
-enum class PlayerMode
-{
-    TIME_SCALING = 1,
-    PITCH_SHIFTING = 2,
-    TIME_PITCH_SCALING = 3
-};
+#include "Common.h"
 
 enum class PlayerState
 {

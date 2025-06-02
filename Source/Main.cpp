@@ -10,6 +10,8 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 
+#include "OfflineProcessor.h"
+
 Component* createMainContentComponent();
 
 //==============================================================================
@@ -33,9 +35,33 @@ public:
         }
         else
         {
-            std::cout << commandLine << std::endl;
-            std::cout << "Command line not supported" << std::endl;
-            systemRequestedQuit();
+            Process::setDockIconVisible(false);
+
+            auto params = getCommandLineParameterArray();
+            if (params.size() < 3 || params.size() > 4)
+            {
+                std::cout << "Usage:" << std::endl;
+                std::cout << "pvdoneright <input file> <output file> <scaling ratio> [time/pitch/both]" << std::endl;
+                setApplicationReturnValue(2);
+                return quit();
+            }
+            PlayerMode mode = PlayerMode::TIME_SCALING;
+            if (params.size() >= 4)
+            {
+                auto name = params[3];
+                if (name == "time") mode = PlayerMode::TIME_SCALING;
+                else if (name == "pitch") mode = PlayerMode::PITCH_SHIFTING;
+                else if (name == "both") mode = PlayerMode::TIME_PITCH_SCALING;
+                else
+                {
+                    std::cerr << "Unrecognized mode: " << name << std::endl;
+                    setApplicationReturnValue(2);
+                    return quit();
+                }
+            }
+            bool result = processWavFile(params[0], params[1], params[2].getDoubleValue(), mode);
+            setApplicationReturnValue(result ? 0 : 1);
+            quit();
         }
     }
 

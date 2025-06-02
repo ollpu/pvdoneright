@@ -5,9 +5,15 @@
               bundleIdentifier="at.ac.oeaw.kfs.pvdoneright" includeBinaryInAppConfig="1"
               companyWebsite="https://www.kfs.oeaw.ac.at" companyName="Acoustics Research Institute, Austrian Academy of Sciences"
               companyEmail="zdenek.prusa@oeaw.ac.at" jucerFormatVersion="1"
-              defines="JUCE_MODAL_LOOPS_PERMITTED=1&#10;" cppLanguageStandard="17">
+              defines="JUCE_MODAL_LOOPS_PERMITTED=1&#10;JUCE_DISABLE_JUCE_VERSION_PRINTING=1&#10;"
+              cppLanguageStandard="17">
   <MAINGROUP id="Snh5xk" name="pvdoneright">
     <GROUP id="{E99A4F07-4632-60E9-B902-0D0175B3DB5E}" name="Source">
+      <FILE id="Zi56S3" name="Common.h" compile="0" resource="0" file="Source/Common.h"/>
+      <FILE id="DaCteB" name="OfflineProcessor.h" compile="0" resource="0"
+            file="Source/OfflineProcessor.h"/>
+      <FILE id="oSOToY" name="OfflineProcessor.cpp" compile="1" resource="0"
+            file="Source/OfflineProcessor.cpp"/>
       <FILE id="sNp7Gc" name="FileAudioSource.cpp" compile="1" resource="0"
             file="Source/FileAudioSource.cpp"/>
       <FILE id="ojrjqN" name="FileAudioSource.h" compile="0" resource="0"
