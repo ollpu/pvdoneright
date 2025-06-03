@@ -12,6 +12,13 @@ bool processWavFile(File inputPath, File outputPath, double scalingRatio, Player
         return false;
     }
 
+    const double maxRatio = 10.;
+    if (!std::isfinite(scalingRatio) || scalingRatio < 1 / maxRatio || scalingRatio > maxRatio)
+    {
+        std::cerr << "Scaling ratio out of range" << std::endl;
+        return false;
+    }
+
     AudioFormatManager formatManager;
     formatManager.registerBasicFormats();
     std::unique_ptr<AudioFormatReader> reader(formatManager.createReaderFor(inputPath));
@@ -24,7 +31,7 @@ bool processWavFile(File inputPath, File outputPath, double scalingRatio, Player
 
     AudioFormatReaderSource formatReaderSource(reader.get(), false);
     ResamplingAudioSource pre_ressource(&formatReaderSource, false);
-    ScalingAudioSource ssource(&pre_ressource, false, reader->numChannels, 10.);
+    ScalingAudioSource ssource(&pre_ressource, false, reader->numChannels, maxRatio);
     ResamplingAudioSource post_ressource(&ssource, false);
 
     post_ressource.prepareToPlay(2048, reader->sampleRate);
