@@ -1,5 +1,6 @@
 #include "OfflineProcessor.h"
 
+#include <climits>
 #include <iostream>
 
 #include "ScalingAudioSource.h"
@@ -34,7 +35,8 @@ bool processWavFile(File inputPath, File outputPath, double scalingRatio, Player
     ScalingAudioSource ssource(&pre_ressource, false, reader->numChannels, maxRatio);
     ResamplingAudioSource post_ressource(&ssource, false);
 
-    post_ressource.prepareToPlay(2048, reader->sampleRate);
+    const int blockSize = 4096;
+    post_ressource.prepareToPlay(blockSize, reader->sampleRate);
 
     int64 resultLength = reader->lengthInSamples;
     if (mode == PlayerMode::PITCH_SHIFTING)
@@ -89,7 +91,7 @@ bool processWavFile(File inputPath, File outputPath, double scalingRatio, Player
         return false;
     }
 
-    bool ok = writer->writeFromAudioSource(post_ressource, int(resultLength));
+    bool ok = writer->writeFromAudioSource(post_ressource, int(resultLength), blockSize);
     if (!ok)
     {
         std::cerr << "Error while writing output file" << std::endl;
